@@ -1,0 +1,10 @@
+# template configuration
+applications:
+ - name: demo
+   type: microservice
+   profiles: prod,cloud,mq
+   instances: 1
+   memory: 128M
+   port: 1234
+   path: .
+   

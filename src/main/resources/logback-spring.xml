@@ -1,0 +1,37 @@
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+	<appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="CONSOLE" />
+	</appender>
+
+	<root level="INFO">
+		<appender-ref ref="ASYNC" />
+	</root>
+
+	<jmxConfigurator />
+
+
+	<springProfile name="staging">
+		<logger name="org.springframework" level="INFO" />
+		<logger name="com.os" level="DEBUG" />
+	</springProfile>
+
+	<springProfile name="!staging">
+		<logger name="org.springframework" level="WARN" />
+		<logger name="org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer" level="INFO" />
+		<logger name="org.springframework.cloud.netflix.zuul.filters.ProxyRouteLocator" level="WARN" />
+		
+		<logger name="springfox.documentation" level="WARN" />
+
+		<logger name="com.netflix" level="WARN" />
+		<logger name="com.netflix.config.sources.URLConfigurationSource" level="ERROR" />
+
+		<logger name="org.apache.catalina.core" level="WARN" />
+		<logger name="org.apache.catalina.loader.WebappClassLoaderBase" level="ERROR" /><!-- disable thread shutdown warnings -->
+		
+		<logger name="com.sun.jersey.server.impl.application.WebApplicationImpl" level="WARN" />
+	</springProfile>
+
+</configuration>

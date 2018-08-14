@@ -1,0 +1,14 @@
+# please switch to false for debugging
+monitoring.method.enabled: true
+logging.level.method: DEBUG
+
+spring.cloud.config.uri: http://10.10.13.31t:7281/config
+eureka.client.registerWithEureka: false
+eureka.client.service-url.defaultZone: http://10.10.13.31:7261/eureka/
+
+# check the binding ip on the server
+spring.activemq.broker-url: 'tcp://10.10.13.31:61616'
+spring.activemq.in-memory: false
+spring.activemq.pooled: true
+spring.jms.pubSubDomain: true
+  

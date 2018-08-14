@@ -1,0 +1,29 @@
+server:
+  port: 1235
+
+spring:
+  application:
+    name: demo
+    index: ${server.port}
+  cloud:
+    config:
+      uri: http://localhost:7281/config
+      username: root
+      password: optimal
+    
+management:
+  context-path: /manage
+
+info:
+  version: '@project.version@ [@fix@]'
+  app.name: '${spring.application.name}'
+  app.description: '@project.description@'
+  app.port: ${server.port}
+  app.java-version: '${java.version}'
+  build.artifact: '@project.artifactId@'
+  build.name: '@project.name@'
+  build.version: '@project.version@'
+  build.fix: '@fix@'
+  build.date: '@buildNumber@'
+  build.java-version: '@java.version@'
+  build.spring-boot: '@spring-boot.version@'

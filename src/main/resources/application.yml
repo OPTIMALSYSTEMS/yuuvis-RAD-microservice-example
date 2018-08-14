@@ -1,0 +1,16 @@
+#default values for single instantiation 
+eureka:
+  instance:
+    status-page-url-path: /manage/info
+    health-check-url-path: /manage/health
+    metadata-map:
+      instanceId: ${spring.application.name}:${spring.application.index:${server.port}}
+  client:
+    service-url:
+      defaultZone: http://${APPLICATION_DOMAIN:${COMPUTERNAME:localhost}}:7261/eureka/
+
+## default application properties      
+demo:
+  text: aus der Konfiguration
+
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 10000
