@@ -7,7 +7,7 @@ import feign.form.FormEncoder;
 import feign.hystrix.HystrixFeign;
 import feign.jackson.JacksonDecoder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.netflix.feign.FeignClientsConfiguration;
+import org.springframework.cloud.openfeign.FeignClientsConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;

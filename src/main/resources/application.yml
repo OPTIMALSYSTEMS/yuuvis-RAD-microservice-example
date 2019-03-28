@@ -9,6 +9,16 @@ eureka:
     service-url:
       defaultZone: http://${APPLICATION_DOMAIN:${COMPUTERNAME:localhost}}:7261/eureka/
 
+management:
+  endpoints:
+    web:
+      base-path: /manage
+      exposure:
+        include: metrics,info,health
+  endpoint:
+    health:
+      show-details: always
+
 ## default application properties      
 demo:
   text: aus der Konfiguration
