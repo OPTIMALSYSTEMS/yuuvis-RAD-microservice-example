@@ -5,14 +5,15 @@ import feign.jackson.JacksonEncoder;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.jms.annotation.EnableJms;
 
-@SpringBootApplication(exclude = JmsAutoConfiguration.class)
+@SpringBootApplication
 @EnableDiscoveryClient
+@EnableJms
 @EnableFeignClients(defaultConfiguration = JacksonEncoder.class)
 public class DemoApplication implements ApplicationContextAware
 {
