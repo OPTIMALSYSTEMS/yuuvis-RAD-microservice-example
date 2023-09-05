@@ -24,22 +24,22 @@ public class MessagingService {
     @JmsListener(destination = "documentChanged")
     public void readMessageDocumentChanged(String messageText) {
         LOGGER.info("documentChanged event");
-        eytractMessage(messageText);
+        extractMessage(messageText);
     }
 
     @JmsListener(destination = "indexDataChanged")
     public void readMessageIndexDataChanged(String messageText) {
         LOGGER.info( "indexDataChanged event");
-        eytractMessage(messageText);
+        extractMessage(messageText);
     }
 
     @JmsListener(destination = "documentDeleted")
     public void readMessageDocumentDeleted(String messageText) {
         LOGGER.info( "documentDeleted event");
-        eytractMessage(messageText);
+        extractMessage(messageText);
     }
 
-    private void eytractMessage(String messageText) {
+    private void extractMessage(String messageText) {
         try {
             Object object = new ObjectMapper().readValue(messageText, Object.class);
             if (object != null && object instanceof Map) {

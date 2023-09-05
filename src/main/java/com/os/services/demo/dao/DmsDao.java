@@ -3,8 +3,8 @@ package com.os.services.demo.dao;
 
 import com.os.services.demo.model.QDoc;
 import feign.Client;
+import feign.Feign;
 import feign.form.FormEncoder;
-import feign.hystrix.HystrixFeign;
 import feign.jackson.JacksonDecoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClientsConfiguration;
@@ -27,7 +27,7 @@ public class DmsDao {
     @Autowired
     public DmsDao(Client client) {
 
-        this.dmsUploadClient = HystrixFeign.builder()
+        this.dmsUploadClient = Feign.builder()
                 .client(client)
                 .decoder(new JacksonDecoder())
                 .encoder(new FormEncoder())

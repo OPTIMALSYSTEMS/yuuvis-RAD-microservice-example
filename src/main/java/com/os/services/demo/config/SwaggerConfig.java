@@ -1,88 +1,56 @@
-
 package com.os.services.demo.config;
 
-import static com.google.common.base.Predicates.or;
-import static springfox.documentation.builders.PathSelectors.regex;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.UiConfiguration;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.http.HttpHeaders;
 
-import com.google.common.base.Predicate;
 
 @Configuration
-@EnableSwagger2
-// Enable swagger 2.0 spec
-public class SwaggerConfig
-{
+public class SwaggerConfig {
+    public static final String ApiTitle = "DEMO API";
+
     @Bean
-    public Docket api()
-    {
-        // @formatter:off
-        return new Docket(DocumentationType.SWAGGER_2)
-            .groupName(" demo-api")
-            .apiInfo(apiInfo())
-            .select()
-                .apis(RequestHandlerSelectors.basePackage("com.os.services.demo"))
-                .paths(apiPaths())
-                .build()
-        ;
-        // @formatter:on
+    public GroupedOpenApi api() {
+        return GroupedOpenApi.builder().group("demo-api").pathsToMatch(paths()).addOpenApiCustomiser(openApi -> {
+            openApi.addSecurityItem(new SecurityRequirement().addList("jwtAuth"));
+
+            openApi.getComponents().addSecuritySchemes("jwtAuth", new SecurityScheme().name(HttpHeaders.AUTHORIZATION)
+                    .type(SecurityScheme.Type.APIKEY).in(SecurityScheme.In.HEADER).description("JWT"));
+        }).build();
+
     }
 
     @Bean
-    public Docket adminApi()
-    {
-        // @formatter:off
-        return new Docket(DocumentationType.SWAGGER_2)
-            .groupName("administation-api")
-            .apiInfo(apiInfo())
-            .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(adminApiPaths())
-                .build()
-        ;
-        // @formatter:on
-    }
-
-    // @see:
-    // https://github.com/springfox/springfox-demos/blob/master/boot-swagger/src/main/java/springfoxdemo/boot/swagger/Application.java
-    private ApiInfo apiInfo()
-    {
-        // @formatter:off
-        return new ApiInfoBuilder()
-                .title("DEMO API")
-                .description("demo service.")
-                .termsOfServiceUrl("http://www.optimal-systems.de")                
-                .version("2.0")
-                .build();
-        // @formatter:on
+    public OpenAPI openAPI() {
+        return new OpenAPI().info(new Info()
+                .title(ApiTitle).description("").version("3.0").contact(new Contact().name("OPTIMAL SYSTEMS GmbH")
+                        .email("contact@optimal-systems.com").url("http://www.optimal-systems.com"))
+                .termsOfService("http://www.optimal-systems.com"));
     }
 
     @Bean
-    UiConfiguration uiConfig()
-    {
-        return new UiConfiguration("validatorUrl");
+    public GroupedOpenApi adminApi() {
+        return GroupedOpenApi.builder().group("administration-api").pathsToMatch(adminApiPaths())
+                .addOpenApiCustomiser(openApi -> {
+                    openApi.addSecurityItem(new SecurityRequirement().addList("jwtAuth"));
+
+                    openApi.getComponents().addSecuritySchemes("jwtAuth",
+                            new SecurityScheme().name(HttpHeaders.AUTHORIZATION).type(SecurityScheme.Type.APIKEY)
+                                    .in(SecurityScheme.In.HEADER).description("JWT"));
+                }).build();
     }
 
-    private Predicate<String> apiPaths()
-    {
-        // @formatter:off
-        return or(
-                  regex("/api.*"),
-                  regex("/test.*"));   
-        // @formatter:on 
+    private String[] paths() {
+        return new String[]{"/api/dms/**"};
     }
 
-    private Predicate<String> adminApiPaths()
-    {
-        // @formatter:off
-        return regex("/manage.*");   
-        // @formatter:on 
+    private String[] adminApiPaths() {
+        return new String[]{"/manage/**"};
     }
 }
